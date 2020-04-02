@@ -42,6 +42,7 @@ public static function Student($id){
 								
 								header('Content-type: application/json');
 								echo json_encode($data);
+								
 							}else if (($row['Board'] == 'CSMB') AND (max($a) > 8) AND (count($a) > 2) ){
 								
 								
@@ -61,7 +62,7 @@ public static function Student($id){
 
 								$xml=simplexml_load_string($myXMLData) or die("Error: Cannot create object");
 								print_r($xml);
-							
+								
 							}else{
 										if ($row['Board'] == 'CSM'){
 											
@@ -69,6 +70,7 @@ public static function Student($id){
 										
 										header('Content-type: application/json');
 										echo json_encode($data);
+										
 										}else{
 											$myXMLData =
 											"<?xml version='1.0' encoding='UTF-8'?>
@@ -86,6 +88,7 @@ public static function Student($id){
 
 											$xml=simplexml_load_string($myXMLData) or die("Error: Cannot create object");
 											print_r($xml);
+											
 										}
 							}
 
