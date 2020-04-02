@@ -7,7 +7,7 @@ $GLOBALS['config'] = array(
 		'password' => '',
 		'db_name' => 'test'
 	),
-	'app_dir' => 'C:\xampp\htdocs\Test', 
+	'app_dir' => 'C:\xampp\htdocs', 
 	'site_url' => 'localhost',
 );
 spl_autoload_register(function($classname){

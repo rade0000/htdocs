@@ -1,0 +1,6 @@
+RewriteEngine On
+
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^student/(.*)$ test.php?students=$1 [QSA]

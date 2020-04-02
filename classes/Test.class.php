@@ -1,16 +1,121 @@
 <?php
-Class Admin{
+Class Test{
 	private static $db;
 	public static function init(){
 		self::$db = Connect::getInstance();
     }
 	// 
 public static function Student($id){
-	if !empty($id){
-		echo $id;
-	}
-}
+	$result = self::$db->query("SELECT * FROM students WHERE id = {$id}");
+					while ($row = $result->fetch(PDO::FETCH_ASSOC)) { 
+						//average
+						$a = array($row['Grade_1'],$row['Grade_2'],$row['Grade_3'],$row['Grade_4']);
+
+						$average = array_sum($a) / count($a);
+						// if have grades
+									if ($row['Grade_1'] == 0){
+										$row['Grade_1'] = 'No grade';
+										unset($a['Grade_1']);
+									}
+									if ($row['Grade_2'] == 0){
+										$row['Grade_2'] = 'No grade';
+										unset($a['Grade_2']);
+									}
+									if ($row['Grade_3'] == 0){
+										$row['Grade_3'] = 'No grade';
+										unset($a['Grade_3']);
+									}
+									if ($row['Grade_4'] == 0){
+										$row['Grade_4'] = 'No grade';
+										unset($a['Grade_4']);
+									}
+						
+						$Board = $row['Board'];
+						
+						
+						
 
 
+							if (($Board == 'CSM') AND ($average >= 7)){
+								$passed = 'Pass';
+								$data = [ 'ID' => $row['id'], 'name' => $row['Name'], 'Grade 1' => $row['Grade_1'], 'Grade 2' => $row['Grade_2'], 'Grade 3' => $row['Grade_3'], 'Grade 4' => $row['Grade_4'], 'Average' => $average, 'Final Result' => $passed];
+								
+								header('Content-type: application/json');
+								echo json_encode($data);
+							}else if (($Board == 'CSMB') AND (max($a) > 8) AND (count($a) > 2) ){
+								
+								
+								$myXMLData =
+								"<?xml version='1.0' encoding='UTF-8'?>
+								<note>
+								<ID>".$row['id']."</ID>
+								<name>".$row['Name']."</name>
+								<Grade1>".$row['Grade_1']."</Grade1>
+								<Grade2>".$row['Grade_2']."</Grade2>
+								<Grade3>".$row['Grade_3']."</Grade3>
+								<Grade4>".$row['Grade_4']."</Grade4>
+								<Biggest_Grade>".max($a)."</Biggest_Grade>
+								<Average>".$average."</Average>
+								<Final_Result>Pass</Final_Result>
+								</note>";
+
+								$xml=simplexml_load_string($myXMLData) or die("Error: Cannot create object");
+								print_r($xml);
+							
+							}else{
+										if ($board = 'CSM'){
+											$passed = 'Fail';
+										$data = [ 'ID' => $row['id'], 'name' => $row['Name'], 'Grade 1' => $row['Grade_1'], 'Grade 2' => $row['Grade_2'], 'Grade 3' => $row['Grade_3'], 'Grade 4' => $row['Grade_4'], 'Average' => $average, 'Final Result' => $passed];
+										
+										header('Content-type: application/json');
+										echo json_encode($data);
+										}else{
+																				$myXMLData =
+											"<?xml version='1.0' encoding='UTF-8'?>
+											<note>
+											<ID>".$row['id']."</ID>
+											<name>".$row['Name']."</name>
+											<Grade 1>".$row['Grade_1']."</Grade 1>
+											<Grade 2>".$row['Grade_2']."</Grade 2>
+											<Grade 3>".$row['Grade_3']."</Grade 3>
+											<Grade 4>".$row['Grade_4']."</Grade 4>
+											<Biggest Grade>".max($a)."</Biggest Grade>
+											<Average>".$average."</Average>
+											<Final Result>Fail</Final Result>
+											</note>";
+
+											$xml=simplexml_load_string($myXMLData) or die("Error: Cannot create object");
+											print_r($xml);
+										}
+							}
+
+
+
+								
+							
+
+				}
+
 }
-Admin::init();
+
+public static function Students(){
+	$result = self::$db->query("SELECT * FROM students");
+	while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+			echo "<ul>
+			  <li><a href='/student/".$row['id']."' target='_blank'>".$row['Name']."</a> </li>
+			  
+			</ul>";
+
+	 }
+}
+
+}
+Test::init();
+
+
+
+
+
+
+
+
